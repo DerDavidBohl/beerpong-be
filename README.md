@@ -1,2 +1,2 @@
-# nodejs-rest-starter
-A Starter for node.js REST-apps
+# beerpong-be  
+This is the backend for my Beerpong Score-Save-App
