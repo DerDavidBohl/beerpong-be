@@ -1,89 +1,484 @@
-host: localhost:3000
 basePath: /api/v1
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: title
-  description: description
+  title: Beerpong
+  description: Backend for the Beerpong Web App.
   termsOfService: terms
   contact:
     name: David Bohl
-    url: https://github.com/DerDavidBohl/nodejs-rest-starter
+    url: https://github.com/DerDavidBohl/beerpong-be
+    email: david@bohl24.de
   license:
     name: MIT
     url: http://opensource.org/licenses/MIT
 paths:
-  /hello:
+  /athletes:
     get:
-      summary: Gets All Worlds
-      description: Gets All Worlds!
+      description: Gets All Athletes With Id
+      parameters:
+        - $ref: '#/parameters/Athlete Name in Query'
       responses:
         200:
+          description: OK
           schema:
             type: array
             items:
-              $ref: '#/definitions/World'
-          description: OK
+              $ref: '#/definitions/Athlete with Id'
+        400:
+          description: Bad Request
     post:
-      summary: Creates a new World
+      description: Creates A new Athletes
+      parameters:
+        - $ref: '#/parameters/Athlete in Body'
+      responses:
+        201:
+          description: Created            
+        400:
+          description: Bad Request
+  /athletes/{athleteId}:
+    parameters:
+      - $ref: '#/parameters/AthleteId in Path'
+    get:
+      description: Gets a Single Athlete
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Athlete'
+        404:
+          description: Athlete not found
+    put:
+      description: Updates a Athlete
+      responses:
+        204:
+          description: OK
+        400:
+          description: Bad Request
+        404:
+          description: Athlete not found
+      parameters:
+        - $ref: '#/parameters/Athlete in Body'
+    delete:
+      description: Deletes an Athlete
+      responses:
+        204:
+          description: Athlete deleted - No Content
+        404:
+          description: Athlete not
+  /games:
+    get:
+      description: Gets all Games
+      responses:
+        200:
+          description: All Games
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Game with Id'        
+        400:
+          description: Bad Request
+    post:
+      description: Creates a new Game
+      parameters:
+        - $ref: '#/parameters/Game in Body'
+      responses:
+        201:
+          description: Created new Game
+        400:
+          description: Bad Request
+  /games/{gameId}:
+    parameters:
+      - $ref: '#/parameters/GameId in Path'
+    get:
+      description: Gets a specific Game
+      responses:
+        200:
+          description: A specific Game
+          schema:
+            $ref: '#/definitions/Game'
+        404:
+          description: Game not found
+    put:
+      parameters:
+        - $ref: '#/parameters/Game in Body'
+      description: Updates a specific Game
+      responses:
+        204:
+          description: Successfully updated specific Game
+        404:
+          description: Game not found
+    delete:
+      description: Deletes a specific Game
+      responses:
+        204:
+          description: Game does not exist any more.
+        404:
+          description: Game not found
+  /games/{gameId}/athletesTeam1:
+    parameters:
+      - $ref: '#/parameters/GameId in Path'
+    get:
+      description: Gets The Players playing for Team1 in a Game
+      responses:
+        200:
+          description: Players playing in this Game
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Athlete with Id'
+        404:
+          description: Game not found
+    post:
+      parameters:
+        - $ref: '#/parameters/AthleteId in Body'
+      description: Adds a Player to Team1 in a Game
+      responses:
+        201:
+          description: Player was added
+        404:
+          description: Game not found
+  /games/{gameId}/athletesTeam1/{athleteId}:
+    parameters:
+      - $ref: '#/parameters/GameId in Path'
+      - $ref: '#/parameters/AthleteId in Path'
+    delete:
+      description: Deletes a player from Team1 in a Game
+      responses:
+        204: 
+          description: Successfully deleted
+        404:
+          description: Game not found
+  /games/{gameId}/athletesTeam2:
+    parameters:
+      - $ref: '#/parameters/GameId in Path'
+    get:
+      description: Gets The Players playing for Team1 in a Game
+      responses:
+        200:
+          description: Players playing in this Game
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Athlete with Id'
+        404:
+          description: Game not found
+    post:
+      parameters:
+        - $ref: '#/parameters/AthleteId in Body'
+      description: Adds a Player to Team2 in a Game
+      responses:
+        201:
+          description: Player was added
+        404:
+          description: Game not found
+  /games/{gameId}/athletesTeam2/{athleteId}:
+    parameters:
+      - $ref: '#/parameters/GameId in Path'
+      - $ref: '#/parameters/AthleteId in Path'
+    delete:
+      description: Deletes a player from Team2 in a Game
+      responses:
+        204: 
+          description: Successfully deleted
+        404:
+          description: Game not found
+  /seasons:
+    get:
+      parameters:
+        - $ref: '#/parameters/Season Name in Query'
+      description: Gets all Seasons matching the Query
+      responses:
+        200:
+          description: All Seasons
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Season with Id'
+        400:
+          description: Bad Request
+    post:
+      description: Creates a new Season
+      parameters:
+        - $ref: '#/parameters/Season in Body'
+      responses:
+        201:
+          description: Created a new Season
+  /seasons/{seasonId}:
+    parameters:
+      - $ref: '#/parameters/SeasonId in Path'
+    get:
+      description: Gets a specific Season
+      responses:
+        204:
+          description: OK
+          headers:
+            location:
+              type: string
+              description: URL of the Created Object
+        404:
+          description: Not found
+    put:
+      description: Updates a specific Season
+      parameters:
+        - $ref: '#/parameters/Season in Body'
+      responses:
+        204:
+          description: Success
+        404:
+          description: Not Found
+    delete:
+      description: Deletes a specific Season
+      responses:
+        204:
+          description: Success
+        404:
+          description: Not found
+
+  /teams:
+    get:
+      description: Gets all Teams
+      parameters:
+        - $ref: '#/parameters/Team Name in Query'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Team'
+        400:
+          description: Bad Request
+    post:
+      description: Creates a new Team
       responses:
         201:
           description: Created
       parameters:
-        - $ref: '#/parameters/World'
-  /hello/{WorldId}:
+        - $ref: '#/parameters/Team in Body'
+  /teams/{teamId}:
+    parameters:
+      - $ref: '#/parameters/TeamId in Path'
     get:
-      summary: Gets a specific World
-      description: Gets a specific World
-      parameters:
-        - $ref: '#/parameters/WorldId'
-      responses:
-        200:
-          schema:
-            $ref: '#/definitions/World'
-          description: Requested World
-        404:
-          description: World not found.
-
-    put:
-      description: Updates a World
+      description: Gets a specific Team
       responses:
         200:
           description: OK
+          schema:
+            $ref: '#/definitions/Team with Members'
         404:
-          description: World not found.
-        400:
-          description: Body does not Match World Format
+           description: Team not found
+    put:
+      description: Updates a specific Team
       parameters:
-        - $ref: '#/parameters/World'
-        - $ref: '#/parameters/WorldId'
-    delete:
-      description: Deletes a World
-      parameters:
-        - $ref: '#/parameters/WorldId'
+        - $ref: '#/parameters/Team in Body'
       responses:
         204:
-          description: Successful deleted
+          description: Updated
+        400:
+          description: Bad Request
+        404:
+          description: Team not found
+    delete:
+      description: Deletes a specific Team
+      responses:
+        204:
+          description: Team deleted
+        404:
+          description: Team not found
+  /teams/{teamId}/members:
+    parameters:
+      - $ref: '#/parameters/TeamId in Path'
+    post:
+      description: Adds a Member to a Team
+      parameters:
+        - $ref: '#/parameters/AthleteId in Body'
+      responses:
+        201:
+          description: Created
+        404:
+          description: Team not found
+        400:
+          description: Bad Request
+  /teams/{teamId}/members/{athleteId}:
+    parameters:
+      - $ref: '#/parameters/TeamId in Path'
+      - $ref: '#/parameters/AthleteId in Path'
+    delete:
+      responses:
+        204:
+          description: Deleted Athlete from Members
+        404:
+          description: Team not Found
+  
 parameters:
-  WorldId:
-    name: WorldId
-    in: path
-    required: true
-    type: string
-    description: Id of a specific World
-  World:
-    name: World
+  Game in Body:
+    name: season
     in: body
-    description: World
     schema:
-      $ref: '#/definitions/World'
+      $ref: '#/definitions/Game with refereces'
+  GameId in Path:
+    name: gameId
+    in: path
+    type: string
+    description: Id of a Game
+    required: true
+  SeasonId in Path:
+    name: seasonId
+    in: path
+    type: string
+    description: Id of a Season
+    required: true
+  Season Name in Query:
+    name: name
+    in: query
+    type: string
+    description: Name of a Season
+  Game Team in Query:
+    name: team
+    in: query
+    type: integer
+    description: Team of a Game
+  Season in Body:
+    name: season
+    in: body
+    schema:
+      $ref: '#/definitions/Season'
+  AthleteId in Path:
+    name: athleteId
+    in: path
+    type: string
+    description: Id of an Athlete
+    required: true
+  AthleteId in Body:
+    in: body
+    description: Id of an Athlete
+    schema:
+     $ref: '#/definitions/Athlete with Id only'
+    name: athleteId
+  Athlete Name in Query:
+    name: name
+    in: query
+    type: string
+    description: Name Filter for Athlete
+  Athlete in Body:
+    in: body
+    schema:
+      $ref: '#/definitions/Athlete'
+    required: true
+    name: athlete
+  Team in Body:
+    in: body
+    name: team
+    schema:
+      $ref: '#/definitions/Team'
+  TeamId in Path:
+    name: teamId
+    in: path
+    type: string
+    description: Id of a Team
+    required: true
+  Team Name in Query:
+    name: name
+    in: query
+    type: string
+    description: Name of a Team
+    required: false
+
 definitions:
-  World:
+  Game:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+      scoreTeam1:
+        type: integer
+      scoreTeam2:
+        type: integer
+      season:
+        $ref: '#/definitions/Season with Id'
+      team1:
+        $ref: '#/definitions/Team with Id'
+      team2:
+        $ref: '#/definitions/Team with Id'
+  Game with refereces:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+      scoreTeam1:
+        type: integer
+      scoreTeam2:
+        type: integer
+      season:
+        type: string
+      team1:
+        type: string
+      team2:
+        type: string
+  Game with Id:
+    type: object
+    allOf: 
+      - $ref: '#/definitions/Game'
+    properties:
+     id:
+        type: string
+  Season:
+    type: object
+    properties:
+      from:
+        type: string
+        format: date
+      to:
+        type: string
+        format: date
+      name:
+        type: string
+  Season with Id:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Season'
+    properties:
+      id:
+        type: string
+  Team:
     type: object
     properties:
       name:
         type: string
-      size:
-        type: integer
-    
+  Team with Id:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Athlete'
+    properties:
+      id:
+        type: string
+  Team with Members:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Team'
+    properties:
+      members:
+        type: array
+        items:
+          $ref: '#/definitions/Athlete with Id'
+  Athlete:
+    type: object
+    properties:
+      name:
+        type: string
+  Athlete with Id:
+    type: object
+    properties:
+      name:
+        type: string
+      id:
+        type: string
+  Athlete with Id only:
+    type: object
+    properties: 
+      id:
+        type: string
     

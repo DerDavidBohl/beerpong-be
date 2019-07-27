@@ -1,7 +1,25 @@
 import { RestApp } from "./utils/rest-app";
-import { HelloWorldController } from "./controllers/hello-world.controller";
+import mongoose from 'mongoose';
+import { AthleteController } from "./controllers/athlete.controller";
+import { SwaggerController } from "./controllers/swagger.controller";
+import { TeamController } from "./controllers/team.controller";
+import { SeasonController } from "./controllers/season.controller";
+import { GameController } from "./controllers/game.controller";
 
 const app = new RestApp(3000, [
-    new HelloWorldController()
+    new SwaggerController(),
+    new AthleteController(),
+    new TeamController(),
+    new SeasonController(),
+    new GameController()
 ]);
-app.start();
+
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+
+mongoose.connect('mongodb://localhost/beerpong', {useNewUrlParser: true},(err) => {
+    if(err) {
+        console.log(err);
+        return;
+    }
+    app.start();
+  });
