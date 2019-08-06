@@ -33,7 +33,11 @@ paths:
         - $ref: '#/parameters/Athlete in Body'
       responses:
         201:
-          description: Created            
+          description: Created
+          headers:
+            location:
+              type: string
+              description: ID of the Created Object         
         400:
           description: Bad Request
   /athletes/{athleteId}:
@@ -85,6 +89,10 @@ paths:
       responses:
         201:
           description: Created new Game
+          headers:
+            location:
+              type: string
+              description: ID of the Created Object
         400:
           description: Bad Request
   /games/{gameId}:
@@ -204,6 +212,10 @@ paths:
       responses:
         201:
           description: Created a new Season
+          headers:
+            location:
+              type: string
+              description: ID of the Created Object
   /seasons/{seasonId}:
     parameters:
       - $ref: '#/parameters/SeasonId in Path'
@@ -212,10 +224,6 @@ paths:
       responses:
         204:
           description: OK
-          headers:
-            location:
-              type: string
-              description: URL of the Created Object
         404:
           description: Not found
     put:
@@ -254,6 +262,10 @@ paths:
       responses:
         201:
           description: Created
+          headers:
+            location:
+              type: string
+              description: ID of the Created Object
       parameters:
         - $ref: '#/parameters/Team in Body'
   /teams/{teamId}:

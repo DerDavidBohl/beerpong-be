@@ -4,6 +4,7 @@ import YAML = require("yamljs");
 import swaggerUI from 'swagger-ui-express';
 import bodyParser = require("body-parser");
 import {Request, Response} from "express";
+import cors = require("cors");
 
 export class RestApp {
 
@@ -11,11 +12,12 @@ export class RestApp {
 
     constructor(private port: number, private controllers: RestController[], apiRoute: string = '/api/v1') {
           
-        this.app.use(bodyParser());
         this.app.use((err: Error, req: Request, res: Response, next: any) => {
             console.error(err.stack);
             res.status(500).send('Something went wrong!!');
-        })
+        });
+        this.app.use(bodyParser());
+        this.app.use(cors());
 
         controllers.forEach(controller => {
 

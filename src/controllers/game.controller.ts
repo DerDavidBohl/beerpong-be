@@ -125,7 +125,7 @@ export class GameController implements RestController {
 
     getAllGames(req: Request, res: Response): any {
 
-        //Todo: Query Options
+        // TODO Query Options
         GameMongo.find(null)
         .populate("season")
         .populate('team1')
@@ -138,9 +138,17 @@ export class GameController implements RestController {
 
     createNewGame(req: Request, res: Response): any {
         GameMongo.create(req.body, (err: any, game: IGame) => {
+
+            if(err) {
+                res
+                .status(400)
+                .send(`Something is wrong with your Request.`)
+                return;
+            }
+            
             res
             .status(201)
-            .header("location", req.originalUrl + this.path + '/' + game._id)
+            .header("location", game._id)
             .send();
         });
     }

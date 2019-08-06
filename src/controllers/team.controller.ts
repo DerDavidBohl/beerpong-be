@@ -57,9 +57,17 @@ export class TeamController implements RestController {
 
   createNewTeam(req: Request, res: Response): void {
     TeamMongo.create(req.body, (err: any, team: ITeam) => {
+
+      if(err) {
+          res
+          .status(400)
+          .send(`Something is wrong with your Request.`)
+          return;
+      }
+
       res
         .status(201)
-        .header("location", req.originalUrl + "/teams/" + team._id)
+        .header("location", team._id)
         .send();
     });
   }

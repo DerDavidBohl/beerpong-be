@@ -48,14 +48,22 @@ export class SeasonController implements RestController {
                 res.status(404).send(this.generateNotFoundMsg(req.params.seasonId));
                 return;
             }
-
+            console.log('TEST');
             res.send(new SeasonSimple(season));
         });
-    }
+    }  //TESAT
 
     createNewSeason(req: Request, res: Response) {
         SeasonMongo.create(req.body, (err: any, season: ISeason) => {
-            res.status(201).header('location', this.path + '/' + season._id).send();
+
+            if(err) {
+                res
+                .status(400)
+                .send(`Something is wrong with your Request.`)
+                return;
+            }
+
+            res.status(201).header(season._id).send();
         });
     }
 

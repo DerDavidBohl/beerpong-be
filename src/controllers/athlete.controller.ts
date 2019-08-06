@@ -33,7 +33,14 @@ export class AthleteController implements RestController {
 
     createAthlete(req: Request, res: Response) {
         AthleteMongo.create(req.body, (_dberr: any, dbres: IAthlete) => {
-            res.status(201).header('location', req.baseUrl + '/athletes/' + dbres._id).send();
+
+            if(_dberr) {
+                res
+                .status(400)
+                .send(`Something is wrong with your Request.`)
+                return;
+            }
+            res.status(201).header('location', dbres._id).send();
         })
     }
 
