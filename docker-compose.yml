@@ -1,0 +1,16 @@
+version: '3'
+services: 
+  app:
+    image: beerpong-be
+    restart: always
+    build: .
+    command: node ./build/server.js
+    ports: 
+      - "3000:3000"
+    links: 
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"

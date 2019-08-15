@@ -16,7 +16,7 @@ const app = new RestApp(3000, [
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
-mongoose.connect('mongodb://localhost/beerpong', {useNewUrlParser: true},(err) => {
+mongoose.connect('mongodb://mongo:27017/beerpong', {useNewUrlParser: true},(err) => {
     if(err) {
         console.log(err);
         return;
