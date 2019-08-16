@@ -1,14 +1,16 @@
 version: '3'
 services: 
   app:
-    image: beerpong-be
+    image: davidbohl/beerpong-be
     restart: always
     build: .
-    command: npm start
+    command: bash -c "npm run watch & npm run start_dev"
     ports: 
       - "3000:3000"
     links: 
       - mongo
+    volumes: 
+      - .:/usr/src/app
   mongo:
     container_name: mongo
     image: mongo
