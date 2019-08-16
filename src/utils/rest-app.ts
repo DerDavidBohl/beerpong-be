@@ -30,7 +30,7 @@ export class RestApp {
 
     start() {
         this.app.listen(this.port, () => {
-            console.log(`App started (Port: ${this.port})!`)
+            console.log(`App started (Port: ${this.port})`)
         })
     }
       
