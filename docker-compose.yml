@@ -4,7 +4,7 @@ services:
     image: davidbohl/beerpong-be
     restart: always
     build: .
-    command: bash -c "npm run watch & npm run start_dev"
+    command: bash -c "npm run build && npm run start"
     ports: 
       - "3000:3000"
     links: 
