@@ -1,14 +1,14 @@
 {
-  "name": "nodejs-rest-starter",
+  "name": "beerpong-be",
   "version": "1.0.0",
-  "description": "A Starter for node.js REST Apps.",
+  "description": "A Backend for my Beerpong App",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc",
     "watch": "tsc --watch",
     "start": "node ./build/server.js",
-    "start_dev": "nodemon ./build/server.js"
+    "start_dev": "nodemon ./build/server.js",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

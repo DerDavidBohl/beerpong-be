@@ -4,7 +4,7 @@ services:
     image: beerpong-be
     restart: always
     build: .
-    command: node ./build/server.js
+    command: npm start
     ports: 
       - "3000:3000"
     links: 
