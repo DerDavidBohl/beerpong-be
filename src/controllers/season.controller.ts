@@ -50,7 +50,7 @@ export class SeasonController implements RestController {
             }
             res.send(new SeasonSimple(season));
         });
-    }  //TESAT
+    }
 
     createNewSeason(req: Request, res: Response) {
         SeasonMongo.create(req.body, (err: any, season: ISeason) => {
