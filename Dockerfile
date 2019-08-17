@@ -10,7 +10,6 @@ RUN npm install nodemon -g
 COPY . .
 
 RUN npm run build
-RUN delay 4000
 
 EXPOSE 3000
 CMD node build/src/server.js
