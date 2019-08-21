@@ -4,13 +4,13 @@ services:
     image: davidbohl/beerpong-be
     restart: always
     build: .
-    command: bash -c "npm run build && npm run start"
+    command: npm run dev
     ports: 
       - "3000:3000"
     links: 
       - mongo
-    depends_on: 
-      - mongo
+    volumes: 
+      - .:/usr/src/app
   mongo:
     container_name: mongo
     image: mongo
