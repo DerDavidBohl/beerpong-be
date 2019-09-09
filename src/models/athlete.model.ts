@@ -38,6 +38,6 @@ export class Athlete {
   }
 }
 
-// Export the model and return your IUser interface
+// Export the model and return your interface
 const AthleteMongo = mongoose.model<IAthlete>('Athlete', AthleteSchema)
 export default AthleteMongo;

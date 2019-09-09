@@ -17,7 +17,9 @@ export class RestApp {
             res.status(500).send('Something went wrong!!');
         });
         this.app.use(bodyParser());
-        this.app.use(cors());
+        this.app.use(cors({
+            exposedHeaders: ['location']
+        }));
 
         controllers.forEach(controller => {
 

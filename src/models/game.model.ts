@@ -1,7 +1,7 @@
 import { Document, Schema, model } from "mongoose";
 import { ISeason, SeasonSimple, SeasonWithId } from "./season.model";
 import { ITeam, TeamWithId } from "./team.model";
-import { IAthlete } from "./athlete.model";
+import { IAthlete, AthleteWithId } from "./athlete.model";
 
 export interface IGame extends Document {
   date: Date;
@@ -43,7 +43,7 @@ export class SpecificGame {
         this.season = null;
       } else {
         this.season = new SeasonWithId(game.season);
-      }
+      }      
     }
 
 }

@@ -137,24 +137,13 @@ paths:
               $ref: '#/definitions/Athlete with Id'
         404:
           description: Game not found
-    post:
+    put:
       parameters:
         - $ref: '#/parameters/AthleteId in Body'
       description: Adds a Player to Team1 in a Game
       responses:
         201:
           description: Player was added
-        404:
-          description: Game not found
-  /games/{gameId}/athletesTeam1/{athleteId}:
-    parameters:
-      - $ref: '#/parameters/GameId in Path'
-      - $ref: '#/parameters/AthleteId in Path'
-    delete:
-      description: Deletes a player from Team1 in a Game
-      responses:
-        204: 
-          description: Successfully deleted
         404:
           description: Game not found
   /games/{gameId}/athletesTeam2:
@@ -171,24 +160,18 @@ paths:
               $ref: '#/definitions/Athlete with Id'
         404:
           description: Game not found
-    post:
+    put:
       parameters:
-        - $ref: '#/parameters/AthleteId in Body'
+        - in: body
+          name: athleteIDs
+          schema:
+            type: array
+          required: true
+          description: Array of Strings
       description: Adds a Player to Team2 in a Game
       responses:
         201:
           description: Player was added
-        404:
-          description: Game not found
-  /games/{gameId}/athletesTeam2/{athleteId}:
-    parameters:
-      - $ref: '#/parameters/GameId in Path'
-      - $ref: '#/parameters/AthleteId in Path'
-    delete:
-      description: Deletes a player from Team2 in a Game
-      responses:
-        204: 
-          description: Successfully deleted
         404:
           description: Game not found
   /seasons:

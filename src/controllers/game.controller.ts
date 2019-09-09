@@ -1,7 +1,7 @@
 import { RestController } from "../interfaces/rest-controller.interface";
 import { Router, Request, Response } from "express";
 import { GameMongo, IGame, AllGamesGame, SpecificGame } from "../models/game.model";
-import AthleteMongo, { IAthlete, AthleteWithId } from "../models/athlete.model";
+import AthleteMongo, { IAthlete, AthleteWithId, Athlete } from "../models/athlete.model";
 
 export class GameController implements RestController {
 
@@ -19,6 +19,8 @@ export class GameController implements RestController {
         router.get('/:gameId/athletesTeam2', (req, res) => this.getAthletesForSpecificGame(req, res, 2));
         router.post('/:gameId/athletesTeam1', (req, res) => this.addAthletesToSpecificGame(req, res, 1));
         router.post('/:gameId/athletesTeam2', (req, res) => this.addAthletesToSpecificGame(req, res, 2));
+        router.put('/:gameId/athletesTeam1', (req, res) => this.setAthletesToSpecificGame(req, res, 1));
+        router.put('/:gameId/athletesTeam2', (req, res) => this.setAthletesToSpecificGame(req, res, 2));
         router.delete('/:gameId/athletesTeam1/:athleteId', (req, res) => this.deleteAthletesToSpecificGame(req, res, 1));
         router.delete('/:gameId/athletesTeam2/:athleteId', (req, res) => this.deleteAthletesToSpecificGame(req, res, 2));
 
@@ -49,6 +51,41 @@ export class GameController implements RestController {
             res
             .status(204)
             .send();
+        });
+    }
+
+    setAthletesToSpecificGame(req: Request, res: Response, team: number): void {
+        AthleteMongo.find({ _id : { $in : req.body } }, (err, athletes) => {
+
+            if(err) {
+                res
+                .status(500)
+                .send('Bad Request');
+                return;
+            }
+
+            GameMongo.findById(req.params.gameId, (err, game) => {
+                if(err || !game) {
+                    res
+                    .status(404)
+                    .send(this.generateNotFound(req.params.gameId));
+                    return;
+                }
+                
+                if(team === 1) {
+                    console.log('TEAM 1');
+                    game.athletesTeam1 = athletes;
+                }
+                
+                if(team === 2) {
+                    console.log('TEAM 2');
+                    game.athletesTeam2 = athletes;
+                }
+            
+
+                game.save();
+                res.status(204).send();
+            });
         });
     }
 
