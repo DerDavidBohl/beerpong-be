@@ -73,12 +73,10 @@ export class GameController implements RestController {
                 }
                 
                 if(team === 1) {
-                    console.log('TEAM 1');
                     game.athletesTeam1 = athletes;
                 }
                 
                 if(team === 2) {
-                    console.log('TEAM 2');
                     game.athletesTeam2 = athletes;
                 }
             
