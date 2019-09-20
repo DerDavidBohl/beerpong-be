@@ -123,57 +123,6 @@ paths:
           description: Game does not exist any more.
         404:
           description: Game not found
-  /games/{gameId}/athletesTeam1:
-    parameters:
-      - $ref: '#/parameters/GameId in Path'
-    get:
-      description: Gets The Players playing for Team1 in a Game
-      responses:
-        200:
-          description: Players playing in this Game
-          schema:
-            type: array
-            items: 
-              $ref: '#/definitions/Athlete with Id'
-        404:
-          description: Game not found
-    put:
-      parameters:
-        - $ref: '#/parameters/AthleteId in Body'
-      description: Adds a Player to Team1 in a Game
-      responses:
-        201:
-          description: Player was added
-        404:
-          description: Game not found
-  /games/{gameId}/athletesTeam2:
-    parameters:
-      - $ref: '#/parameters/GameId in Path'
-    get:
-      description: Gets The Players playing for Team1 in a Game
-      responses:
-        200:
-          description: Players playing in this Game
-          schema:
-            type: array
-            items: 
-              $ref: '#/definitions/Athlete with Id'
-        404:
-          description: Game not found
-    put:
-      parameters:
-        - in: body
-          name: athleteIDs
-          schema:
-            type: array
-          required: true
-          description: Array of Strings
-      description: Adds a Player to Team2 in a Game
-      responses:
-        201:
-          description: Player was added
-        404:
-          description: Game not found
   /seasons:
     get:
       parameters:
@@ -308,7 +257,7 @@ paths:
   
 parameters:
   Game in Body:
-    name: season
+    name: game
     in: body
     schema:
       $ref: '#/definitions/Game with refereces'
@@ -397,6 +346,14 @@ definitions:
         $ref: '#/definitions/Team with Id'
       team2:
         $ref: '#/definitions/Team with Id'
+      athletesTeam1:
+        type: array
+        items:
+          $ref: '#/definitions/Athlete with Id'
+      athletesTeam2:
+        type: array
+        items:
+          $ref: '#/definitions/Athlete with Id'
   Game with refereces:
     type: object
     properties:
@@ -413,6 +370,14 @@ definitions:
         type: string
       team2:
         type: string
+      athletesTeam1:
+        type: array
+        items:
+          type: string
+      athletesTeam2:
+        type: array
+        items:
+          type: string
   Game with Id:
     type: object
     allOf: 

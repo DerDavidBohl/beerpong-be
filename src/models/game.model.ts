@@ -21,6 +21,8 @@ export class SpecificGame {
     season: SeasonWithId | null;
     team1: TeamWithId | null;
     team2: TeamWithId | null;
+    athletesTeam1:AthleteWithId[] = [];
+    athletesTeam2:AthleteWithId[] = [];
 
     constructor(game: IGame) {
       this.date = game.date;
@@ -43,12 +45,15 @@ export class SpecificGame {
         this.season = null;
       } else {
         this.season = new SeasonWithId(game.season);
-      }      
+      }
+
+      game.athletesTeam1.forEach(athlete => this.athletesTeam1.push(new AthleteWithId(athlete)));
+      game.athletesTeam2.forEach(athlete => this.athletesTeam2.push(new AthleteWithId(athlete)));
     }
 
 }
 
-export class AllGamesGame extends SpecificGame {
+export class GameWithId extends SpecificGame {
   id: string;
 
   constructor(game: IGame) {
@@ -56,11 +61,11 @@ export class AllGamesGame extends SpecificGame {
     this.id = game._id;
   }
 
-  static generateMultiple(games: IGame[]): AllGamesGame[] {
-    const result: AllGamesGame[] = [];
+  static generateMultiple(games: IGame[]): GameWithId[] {
+    const result: GameWithId[] = [];
 
     games.forEach(game => {
-      result.push(new AllGamesGame(game));
+      result.push(new GameWithId(game));
     });
 
     return result;

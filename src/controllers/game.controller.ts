@@ -1,6 +1,6 @@
 import { RestController } from "../interfaces/rest-controller.interface";
 import { Router, Request, Response } from "express";
-import { GameMongo, IGame, AllGamesGame, SpecificGame } from "../models/game.model";
+import { GameMongo, IGame, GameWithId, SpecificGame } from "../models/game.model";
 import AthleteMongo, { IAthlete, AthleteWithId, Athlete } from "../models/athlete.model";
 
 export class GameController implements RestController {
@@ -15,139 +15,8 @@ export class GameController implements RestController {
         router.get('/:gameId', (req, res) => this.getSpecificGame(req, res));
         router.put('/:gameId', (req, res) => this.editSpecificGame(req, res));
         router.delete('/:gameId', (req, res) => this.deleteSpecificGame(req, res));
-        router.get('/:gameId/athletesTeam1', (req, res) => this.getAthletesForSpecificGame(req, res, 1));
-        router.get('/:gameId/athletesTeam2', (req, res) => this.getAthletesForSpecificGame(req, res, 2));
-        router.post('/:gameId/athletesTeam1', (req, res) => this.addAthletesToSpecificGame(req, res, 1));
-        router.post('/:gameId/athletesTeam2', (req, res) => this.addAthletesToSpecificGame(req, res, 2));
-        router.put('/:gameId/athletesTeam1', (req, res) => this.setAthletesToSpecificGame(req, res, 1));
-        router.put('/:gameId/athletesTeam2', (req, res) => this.setAthletesToSpecificGame(req, res, 2));
-        router.delete('/:gameId/athletesTeam1/:athleteId', (req, res) => this.deleteAthletesToSpecificGame(req, res, 1));
-        router.delete('/:gameId/athletesTeam2/:athleteId', (req, res) => this.deleteAthletesToSpecificGame(req, res, 2));
 
         return router;
-    }
-    deleteAthletesToSpecificGame(req: Request, res: Response, team: number): any {
-        GameMongo.findById(req.params.gameId, (err, game: IGame) => {
-            if(err) {
-                res
-                .status(404)
-                .send(this.generateNotFound(req.params.gameId));
-                return;
-            }
-
-            switch(team) {
-                case 1:
-                    game.athletesTeam1 = game.athletesTeam1.filter((element, index, self) => {
-                        return element._id != req.params.athleteId;
-                    });
-                case 2:
-                    game.athletesTeam2 = game.athletesTeam2.filter((element, index, self) => {
-                        return element._id != req.params.athleteId;
-                    });
-            }
-
-            game.save();
-
-            res
-            .status(204)
-            .send();
-        });
-    }
-
-    setAthletesToSpecificGame(req: Request, res: Response, team: number): void {
-        AthleteMongo.find({ _id : { $in : req.body } }, (err, athletes) => {
-
-            if(err) {
-                res
-                .status(500)
-                .send('Bad Request');
-                return;
-            }
-
-            GameMongo.findById(req.params.gameId, (err, game) => {
-                if(err || !game) {
-                    res
-                    .status(404)
-                    .send(this.generateNotFound(req.params.gameId));
-                    return;
-                }
-                
-                if(team === 1) {
-                    game.athletesTeam1 = athletes;
-                }
-                
-                if(team === 2) {
-                    game.athletesTeam2 = athletes;
-                }
-            
-
-                game.save();
-                res.status(204).send();
-            });
-        });
-    }
-
-    addAthletesToSpecificGame(req: Request, res: Response, team: number): any {
-        AthleteMongo.findById(req.body.id, (err, athlete: IAthlete) => {
-            if(err) {
-                res
-                .status(400)
-                .send(`Could not find a Athlete with ID "${req.body.id}".`);
-                return;
-            }
-
-            const populate = 'athletesTeam' + team;
-            GameMongo.findById(req.params.gameId)
-            .populate(populate)
-            .exec((err, game: IGame) => {
-                if(err) {
-                    res
-                    .status(404)
-                    .send(this.generateNotFound(req.params.gameId));
-                }
-
-                switch(team) {
-                    case 1:
-                        if(!game.athletesTeam1.find((element, index, self) => {
-                            return element._id === athlete._id;
-                        })) {
-                            game.athletesTeam1.push(athlete);
-                            game.save();
-                            break
-                        }
-                    case 2:
-                        if(!game.athletesTeam2.find((element, index, self) => {
-                            return element._id === athlete._id;
-                        })) {
-                            game.athletesTeam2.push(athlete);
-                            game.save();
-                            break
-                        }
-                }
-
-                res
-                .status(204)
-                .send();
-            });
-        });
-    }
-
-    getAthletesForSpecificGame(req: Request, res: Response, team: number): any {
-
-        const populate = 'athletesTeam' + team;
-
-        GameMongo.findById(req.params.gameId)
-        .populate(populate)
-        .exec((err, game: IGame) => {
-            switch(team) {
-                case 1:
-                    res.send(AthleteWithId.getMultiple(game.athletesTeam1));
-                    break;
-                case 2:
-                    res.send(AthleteWithId.getMultiple(game.athletesTeam2));
-                    break;
-            }
-        });
     }
 
     deleteSpecificGame(req: Request, res: Response): any {
@@ -165,9 +34,10 @@ export class GameController implements RestController {
         .populate("season")
         .populate('team1')
         .populate('team2')
+        .populate('athletesTeam1')
+        .populate('athletesTeam2')
         .exec((err, games) => {
-
-            res.send(AllGamesGame.generateMultiple(games));
+            res.send(GameWithId.generateMultiple(games));
         });
     }
 
@@ -193,6 +63,8 @@ export class GameController implements RestController {
         .populate('season')
         .populate('team1')
         .populate('team2')
+        .populate('athletesTeam1')
+        .populate('athletesTeam2')
         .exec((err, game: IGame) => {
             if(err) {
                 res
