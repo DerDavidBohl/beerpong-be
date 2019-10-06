@@ -8,7 +8,7 @@ import cors = require("cors");
 
 export class RestApp {
 
-    private app: express.Application = express();;
+    private app: express.Application = express();
 
     constructor(private port: number, private controllers: RestController[], apiRoute: string = '/api/v1') {
           
