@@ -10,7 +10,7 @@ export class RestApp {
 
     private app: express.Application = express();
 
-    constructor(private port: number, private controllers: RestController[], apiRoute: string = '/api/v1') {
+    constructor(private port: number, private controllers: RestController[], apiRoute: string = '/api/v1', defaultRoute: string = '') {
           
         this.app.use((err: Error, req: Request, res: Response, next: any) => {
             console.error(err.stack);
@@ -28,6 +28,8 @@ export class RestApp {
             }
             this.app.use(apiRoute + controller.path, controller.initializeRoutes());
         });
+
+        this.app.use((req, res) => res.redirect(defaultRoute));
     }
 
     start() {

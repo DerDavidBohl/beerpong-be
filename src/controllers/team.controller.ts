@@ -21,12 +21,6 @@ export class TeamController implements RestController {
     router.get("/:teamId", (req, res) => this.getTeamById(req, res));
     router.put("/:teamId", (req, res) => this.updateTeamById(req, res));
     router.delete("/:teamId", (req, res) => this.deleteTeamById(req, res));
-    router.post("/:teamId/members", (req, res) =>
-      this.addAthleteToTeamById(req, res)
-    );
-    router.delete("/:teamId/members/:athleteId", (req, res) =>
-      this.deleteAthleteFromTeam(req, res)
-    );
 
     return router;
   }
@@ -42,14 +36,14 @@ export class TeamController implements RestController {
   }
 
   updateTeamById(req: Request, res: Response): void {
-    TeamMongo.findById(req.params.teamId, (err, team) => {
+
+    req.body.members = Array.from(new Set(req.body.members)); // Remove Duplicates
+    
+    TeamMongo.findByIdAndUpdate(req.params.teamId, req.body, (err, team) => {
       if (err || !team) {
         res.status(404).send(this.generateNotFoundMessage(req.params.teamId));
         return;
       }
-
-      team.name = req.body.name;
-      team.save();
 
       res.status(204).send();
     });
@@ -94,60 +88,6 @@ export class TeamController implements RestController {
 
         res.status(200).send(new TeamWithMembers(team));
       });
-  }
-
-  addAthleteToTeamById(req: Request, res: Response) {
-    AthleteMongo.findById(req.body.id, (err, athlete) => {
-      if (err || !athlete) {
-        console.log(err);
-        res
-          .status(400)
-          .send(
-            'The Player ID "' +
-              req.body.id +
-              '" could not be added to the Members of Team "' +
-              req.params.teamId +
-              '".'
-          );
-        return;
-      }
-
-      TeamMongo.findById(req.params.teamId, (err, team) => {
-        if (err || !team) {
-          res.status(404).send(this.generateNotFoundMessage(req.params.teamId));
-          return;
-        }
-
-        const found = team.members.find(athl => {
-          return athl._id == req.body.id;
-        });
-
-        if (!found) {
-          team.members.push(athlete);
-
-          team.save((err, team) => res.status(204).send());
-          return;
-        }
-        res.status(201).send();
-      });
-    });
-  }
-
-  deleteAthleteFromTeam(req: Request, res: Response) {
-    TeamMongo.findById(req.params.teamId, (err, team) => {
-      if (err || !team) {
-        res.status(404).send(this.generateNotFoundMessage(req.params.teamId));
-        return;
-      }
-
-      team.members = team.members.filter((athlete, index, self) => {
-        return athlete._id != req.params.athleteId;
-      });
-
-      team.save();
-
-      res.status(204).send();
-    });
   }
 
   generateNotFoundMessage(entity: string): any {

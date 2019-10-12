@@ -10,7 +10,7 @@ services:
     links: 
       - mongo
     volumes: 
-      - .:/usr/src/app
+      - .:/home/node/app
   mongo:
     image: mongo
     ports:

@@ -209,7 +209,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/Team with Members'
+            $ref: '#/definitions/Team'
         404:
            description: Team not found
     put:
@@ -315,7 +315,7 @@ parameters:
     in: body
     name: team
     schema:
-      $ref: '#/definitions/Team'
+      $ref: '#/definitions/Team with references'
   TeamId in Path:
     name: teamId
     in: path
@@ -366,16 +366,21 @@ definitions:
         type: integer
       season:
         type: string
+        default: null
       team1:
         type: string
+        default: null
       team2:
         type: string
+        default: null
       athletesTeam1:
         type: array
+        default: []
         items:
           type: string
       athletesTeam2:
         type: array
+        default: []
         items:
           type: string
   Game with Id:
@@ -408,22 +413,26 @@ definitions:
     properties:
       name:
         type: string
-  Team with Id:
-    type: object
-    allOf:
-      - $ref: '#/definitions/Athlete'
-    properties:
-      id:
-        type: string
-  Team with Members:
-    type: object
-    allOf:
-      - $ref: '#/definitions/Team'
-    properties:
       members:
         type: array
         items:
           $ref: '#/definitions/Athlete with Id'
+  Team with refereces:
+    type: object
+    properties:
+      name:
+        type: string
+      members:
+        type: array
+        items:
+          type: string
+  Team with Id:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Team'
+    properties:
+      id:
+        type: string
   Athlete:
     type: object
     properties:
