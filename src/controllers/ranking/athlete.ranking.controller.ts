@@ -78,11 +78,17 @@ export class AthleteRankingController implements RestController {
             if (a.amountOfVictories < b.amountOfVictories) return 1;
             if (a.amountOfVictories > b.amountOfVictories) return -1;
 
-            if (a.ownHits - a.hostileHits > b.ownHits - b.ownHits) {
+            if (a.ownHits < b.ownHits) {
               return 1;
             }
-            if (a.ownHits - a.hostileHits < b.ownHits - b.ownHits) {
+            if (a.ownHits > b.ownHits) {
               return -1;
+            }
+            if (a.hostileHits < b.hostileHits) {
+              return -1;
+            }
+            if (a.hostileHits > b.hostileHits) {
+              return 1;
             }
 
             return 0;
