@@ -123,6 +123,14 @@ paths:
           description: Game does not exist any more.
         404:
           description: Game not found
+  /rankings/athletes:
+    get:
+      parameters:
+        - $ref: '#/parameters/SeasonId in Query'
+      responses:
+        200:
+          description: Ranking for Athletes    
+      deprecated: false
   /seasons:
     get:
       parameters:
@@ -278,6 +286,11 @@ parameters:
     in: query
     type: string
     description: Name of a Season
+  SeasonId in Query:
+    name: seasonId
+    in: query
+    type: string
+    description: Id of a Season
   Game Team in Query:
     name: team
     in: query
@@ -389,6 +402,25 @@ definitions:
       - $ref: '#/definitions/Game'
     properties:
      id:
+        type: string
+  RankingBase:
+    type: object
+    properties:
+      rank:
+        type: integer
+  AthleteRanking:
+    type: object
+    allOf:
+      - $ref: '#/definitions/RankingBase'
+    properties:
+      athleteId:
+        type: string
+  TeamRanking:
+    type: object
+    allOf:
+      - $ref: '#/definitions/RankingBase'
+    properties:
+      athleteId:
         type: string
   Season:
     type: object

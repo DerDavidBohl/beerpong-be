@@ -6,6 +6,7 @@ import { TeamController } from "./controllers/team.controller";
 import { SeasonController } from "./controllers/season.controller";
 import { GameController } from "./controllers/game.controller";
 import { StatisticController } from "./controllers/statistic.controller";
+import { AthleteRankingController } from "./controllers/ranking/athlete.ranking.controller";
 
 const app = new RestApp(3000, [
     new SwaggerController(),
@@ -13,7 +14,8 @@ const app = new RestApp(3000, [
     new TeamController(),
     new SeasonController(),
     new GameController(),
-    new StatisticController()
+    new StatisticController(),
+    new AthleteRankingController(),
 ], '/api/v1', '/api/v1/swagger');
 
 mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
