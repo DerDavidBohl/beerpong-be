@@ -37,18 +37,25 @@ export class AthleteRankingController implements RestController {
           const rank = new AthleteRanking(new AthleteWithId(athlete));
 
           games.forEach(game => {
+            if (
+              this.athleteArrayContainsAthleteById(
+                game.athletesTeam1,
+                athlete._id
+              )
+            ) {
+              rank.hostileHits += 10 - game.scoreTeam1.valueOf();
+              rank.ownHits += 10 - game.scoreTeam2.valueOf();
+            }
 
-            if(this.athleteArrayContainsAthleteById(game.athletesTeam1, athlete._id))
-                {
-                    rank.hostileHits += game.scoreTeam2.valueOf();
-                    rank.ownHits += game.scoreTeam1.valueOf();
-                }
-            
-                if(this.athleteArrayContainsAthleteById(game.athletesTeam2, athlete._id))
-                {
-                    rank.hostileHits += game.scoreTeam1.valueOf();
-                    rank.ownHits += game.scoreTeam2.valueOf();
-                }
+            if (
+              this.athleteArrayContainsAthleteById(
+                game.athletesTeam2,
+                athlete._id
+              )
+            ) {
+              rank.hostileHits += 10 - game.scoreTeam2.valueOf();
+              rank.ownHits += 10 - game.scoreTeam1.valueOf();
+            }
 
             if (
               (this.athleteArrayContainsAthleteById(
@@ -67,14 +74,15 @@ export class AthleteRankingController implements RestController {
           });
 
           ranks.push(rank);
-          ranks.sort((a,b) => {
-            if(a.amountOfVictories < b.amountOfVictories)
-                return 1;
-            if(a.amountOfVictories > b.amountOfVictories)
-                return -1;
+          ranks.sort((a, b) => {
+            if (a.amountOfVictories < b.amountOfVictories) return 1;
+            if (a.amountOfVictories > b.amountOfVictories) return -1;
 
-            if((a.ownHits - a.hostileHits) > (b.ownHits - b.ownHits)) {
-                return 1
+            if (a.ownHits - a.hostileHits > b.ownHits - b.ownHits) {
+              return 1;
+            }
+            if (a.ownHits - a.hostileHits < b.ownHits - b.ownHits) {
+              return -1;
             }
 
             return 0;
