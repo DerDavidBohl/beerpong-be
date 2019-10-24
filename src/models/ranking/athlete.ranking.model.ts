@@ -3,6 +3,6 @@ import { AthleteWithId } from "../athlete.model";
 
 export class AthleteRanking extends RankingBase {
   constructor(public athlete: AthleteWithId) {
-    super(0, 0, 0, 0);
+    super(0, 0, 0, 0, 0, 0);
   }
 }

@@ -41,35 +41,50 @@ export class AthleteRankingController implements RestController {
               this.athleteArrayContainsAthleteById(
                 game.athletesTeam1,
                 athlete._id
-              )
-            ) {
-              rank.hostileHits += 10 - game.scoreTeam1.valueOf();
-              rank.ownHits += 10 - game.scoreTeam2.valueOf();
-            }
-
-            if (
+              ) ||
               this.athleteArrayContainsAthleteById(
                 game.athletesTeam2,
                 athlete._id
               )
             ) {
-              rank.hostileHits += 10 - game.scoreTeam2.valueOf();
-              rank.ownHits += 10 - game.scoreTeam1.valueOf();
-            }
+              rank.amountOfGames++;
 
-            if (
-              (this.athleteArrayContainsAthleteById(
-                game.athletesTeam1,
-                athlete._id
-              ) &&
-                game.scoreTeam1 > game.scoreTeam2) ||
-              (this.athleteArrayContainsAthleteById(
-                game.athletesTeam2,
-                athlete._id
-              ) &&
-                game.scoreTeam2 > game.scoreTeam1)
-            ) {
-              rank.amountOfVictories++;
+              if (
+                this.athleteArrayContainsAthleteById(
+                  game.athletesTeam1,
+                  athlete._id
+                )
+              ) {
+                rank.hostileHits += 10 - game.scoreTeam1.valueOf();
+                rank.ownHits += 10 - game.scoreTeam2.valueOf();
+              }
+
+              if (
+                this.athleteArrayContainsAthleteById(
+                  game.athletesTeam2,
+                  athlete._id
+                )
+              ) {
+                rank.hostileHits += 10 - game.scoreTeam2.valueOf();
+                rank.ownHits += 10 - game.scoreTeam1.valueOf();
+              }
+
+              if (
+                (this.athleteArrayContainsAthleteById(
+                  game.athletesTeam1,
+                  athlete._id
+                ) &&
+                  game.scoreTeam1 > game.scoreTeam2) ||
+                (this.athleteArrayContainsAthleteById(
+                  game.athletesTeam2,
+                  athlete._id
+                ) &&
+                  game.scoreTeam2 > game.scoreTeam1)
+              ) {
+                rank.amountOfVictories++;
+              } else {
+                rank.amountOfDefeats++;
+              }
             }
           });
 
@@ -78,18 +93,14 @@ export class AthleteRankingController implements RestController {
             if (a.amountOfVictories < b.amountOfVictories) return 1;
             if (a.amountOfVictories > b.amountOfVictories) return -1;
 
-            if (a.ownHits < b.ownHits) {
-              return 1;
-            }
-            if (a.ownHits > b.ownHits) {
-              return -1;
-            }
-            if (a.hostileHits < b.hostileHits) {
-              return -1;
-            }
-            if (a.hostileHits > b.hostileHits) {
-              return 1;
-            }
+            if (a.ownHits < b.ownHits) return 1;
+            if (a.ownHits > b.ownHits) return -1;
+
+            if (a.amountOfDefeats < b.amountOfDefeats) return -1;
+            if (a.amountOfDefeats > b.amountOfDefeats) return 1;
+
+            if (a.hostileHits < b.hostileHits) return -1;
+            if (a.hostileHits > b.hostileHits) return 1;
 
             return 0;
           });
