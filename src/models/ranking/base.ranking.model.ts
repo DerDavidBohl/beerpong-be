@@ -3,6 +3,6 @@ export class RankingBase {
     public amountOfGames: number,
     public amountOfVictories: number, 
     public amountOfDefeats: number,
-    public hostileHits: number, 
-    public ownHits: number) {}
+    public ownHits: number,
+    public hostileHits: number) {}
 }
