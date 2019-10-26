@@ -403,6 +403,7 @@ definitions:
     properties:
      id:
         type: string
+  #TODO: Add missung properties
   RankingBase:
     type: object
     properties:

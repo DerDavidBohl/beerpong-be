@@ -20,6 +20,13 @@ export class AthleteRankingController implements RestController {
   }
 
   getAllAthleteRankings(req: Request, res: Response): any {
+
+    let seasonId: any = null;
+
+    if(req.query.seasonId){
+      seasonId = req.query.seasonId;
+    }
+
     AthleteMongo.find((err, athletes) => {
       if (err) {
         res.status(500).send("Internal error.");
@@ -37,6 +44,10 @@ export class AthleteRankingController implements RestController {
           const rank = new AthleteRanking(new AthleteWithId(athlete));
 
           games.forEach(game => {
+
+            if(seasonId != game.season)
+              return;
+
             if (
               this.athleteArrayContainsAthleteById(
                 game.athletesTeam1,
