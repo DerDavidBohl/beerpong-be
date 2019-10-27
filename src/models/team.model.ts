@@ -1,5 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 import { IAthlete, AthleteWithId } from "./athlete.model";
+import { IHaveNameAndId } from "./simpleNameAndId.model";
 
 export interface ITeam extends Document {
     name: string;
@@ -11,7 +12,7 @@ export const TeamSchema : Schema = new Schema({
     members: [{ type: Schema.Types.ObjectId, ref: 'Athlete' }]
     });
 
-export class TeamWithId {
+export class TeamWithId implements IHaveNameAndId {
     name: string;
     id: string;
 
