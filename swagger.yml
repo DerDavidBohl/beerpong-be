@@ -129,7 +129,19 @@ paths:
         - $ref: '#/parameters/SeasonId in Query'
       responses:
         200:
-          description: Ranking for Athletes    
+          description: Ranking for Athletes
+          schema:
+            $ref: '#/definitions/Ranking'
+      deprecated: false
+  /rankings/teams:
+    get:
+      parameters:
+        - $ref: '#/parameters/SeasonId in Query'
+      responses:
+        200:
+          description: Ranking for Athletes
+          schema:
+            $ref: '#/definitions/Ranking'
       deprecated: false
   /seasons:
     get:
@@ -404,25 +416,29 @@ definitions:
      id:
         type: string
   #TODO: Add missung properties
-  RankingBase:
+  Ranking:
     type: object
     properties:
+      entity:
+        type: object
+        properties:
+          name:
+            type: string
+          id:
+            type: string
       rank:
         type: integer
-  AthleteRanking:
-    type: object
-    allOf:
-      - $ref: '#/definitions/RankingBase'
-    properties:
-      athleteId:
-        type: string
-  TeamRanking:
-    type: object
-    allOf:
-      - $ref: '#/definitions/RankingBase'
-    properties:
-      athleteId:
-        type: string
+      amountOfGame:
+        type: integer
+      amountOfVictories:
+        type: integer
+      amountOfDefeats:
+        type: integer
+      ownHits:
+        type: integer
+      hostileHits:
+        type: integer
+      
   Season:
     type: object
     properties:
@@ -450,7 +466,7 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Athlete with Id'
-  Team with refereces:
+  Team with references:
     type: object
     properties:
       name:

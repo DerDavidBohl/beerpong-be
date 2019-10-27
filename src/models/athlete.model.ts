@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { IHaveNameAndId } from './simpleNameAndId.model';
 
 export interface IAthlete extends Document {
   name: string;
@@ -8,7 +9,7 @@ export const AthleteSchema: Schema = new Schema({
   name: { type: String, required: true }
 });
 
-export class AthleteWithId {
+export class AthleteWithId implements IHaveNameAndId {
 
   name: string;
   id: string;
