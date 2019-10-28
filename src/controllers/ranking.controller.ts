@@ -112,7 +112,7 @@ export class RankingController implements RestController {
         cupsOwnSide = game.scoreTeam1.valueOf();
         cupsHostileSide = game.scoreTeam2.valueOf();
       }
-
+      
       if (game.team2 && game.team2._id.equals(rankableEntity.id)) {
         cupsOwnSide = game.scoreTeam2.valueOf();
         cupsHostileSide = game.scoreTeam1.valueOf();
@@ -121,7 +121,7 @@ export class RankingController implements RestController {
       rank.hostileHits += 10 - cupsOwnSide;
       rank.ownHits += 10 - cupsHostileSide;
 
-      if (cupsOwnSide < cupsHostileSide) {
+      if (cupsOwnSide > cupsHostileSide) {
         rank.amountOfVictories++;
       } else {
         rank.amountOfDefeats++;
