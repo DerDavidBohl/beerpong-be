@@ -22,7 +22,7 @@ export class AthleteController implements RestController {
     getAllAthletes(req: Request, res: Response) {
 
         let conditions = null;
-        if(req.param('name')) {
+        if(req.query.name) {
             conditions = { name: { $regex: req.param('name'), $options: 'i' } } ;
         }
 
@@ -34,7 +34,11 @@ export class AthleteController implements RestController {
     createAthlete(req: Request, res: Response) {
         AthleteMongo.create(req.body, (_dberr: any, dbres: IAthlete) => {
 
+            console.info(req.body);
+
             if(_dberr) {
+
+                console.log(_dberr);
                 res
                 .status(400)
                 .send(`Something is wrong with your Request.`)

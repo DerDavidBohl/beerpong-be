@@ -1,7 +1,7 @@
 import { RestController } from "../interfaces/rest-controller.interface";
 import express = require("express");
-import YAML = require("yamljs");
-import swaggerUI from 'swagger-ui-express';
+// import YAML = require("yamljs");
+// import swaggerUI from 'swagger-ui-express';
 import bodyParser = require("body-parser");
 import {Request, Response} from "express";
 import cors = require("cors");
@@ -16,7 +16,7 @@ export class RestApp {
             console.error(err.stack);
             res.status(500).send('Something went wrong!!');
         });
-        this.app.use(bodyParser());
+        this.app.use(bodyParser.json());
         this.app.use(cors({
             exposedHeaders: ['location']
         }));

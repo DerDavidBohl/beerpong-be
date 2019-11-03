@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IHaveNameAndId } from './simpleNameAndId.model';
+import { IHaveNameAndId } from '../interfaces/simple-name-and-id.interface';
 
 export interface IAthlete extends Document {
   name: string;

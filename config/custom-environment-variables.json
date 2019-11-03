@@ -1,0 +1,5 @@
+{
+    "beerpong-port":"BEERPONG_PORT",
+    "mongo-host": "MONGO_HOST",
+    "mongo-port": "MONGO_PORT"
+}

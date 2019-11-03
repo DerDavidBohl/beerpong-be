@@ -3,8 +3,8 @@ import { Router } from "express";
 import { Request, Response } from "express";
 import AthleteMongo, { AthleteWithId, IAthlete } from "../models/athlete.model";
 import { GameMongo, IGame } from "../models/game.model";
-import { Ranking, RankingType } from "../models/ranking/base.ranking.model";
-import { IHaveNameAndId } from "../models/simpleNameAndId.model";
+import { Ranking, RankingType } from "../models/base.ranking.model";
+import { IHaveNameAndId } from "../interfaces/simple-name-and-id.interface";
 import { TeamMongo, TeamWithId } from "../models/team.model";
 
 export class RankingController implements RestController {

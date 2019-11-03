@@ -1,4 +1,4 @@
-import { IHaveNameAndId } from "../simpleNameAndId.model";
+import { IHaveNameAndId } from "../interfaces/simple-name-and-id.interface";
 
 export class Ranking {
   constructor(

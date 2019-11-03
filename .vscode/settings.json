@@ -2,7 +2,7 @@
     "files.exclude": {
         "build": true,
         "package-lock.json": true,
-        "node_modules": true
+        "node_modules": false
     },
     "npm.enableScriptExplorer": true
 }

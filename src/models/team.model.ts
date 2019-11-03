@@ -1,6 +1,6 @@
 import { Schema, model, Document } from "mongoose";
 import { IAthlete, AthleteWithId } from "./athlete.model";
-import { IHaveNameAndId } from "./simpleNameAndId.model";
+import { IHaveNameAndId } from "../interfaces/simple-name-and-id.interface";
 
 export interface ITeam extends Document {
     name: string;
