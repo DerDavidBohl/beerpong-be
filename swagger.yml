@@ -206,7 +206,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Team'
+              $ref: '#/definitions/Team' #TODO: Use Correct Ref
         400:
           description: Bad Request
     post:
