@@ -1,6 +1,6 @@
 basePath: /api/v1
 swagger: '2.0'
-info:
+info:  
   version: 1.0.0
   title: Beerpong
   description: Backend for the Beerpong Web App.
@@ -12,9 +12,16 @@ info:
   license:
     name: MIT
     url: http://opensource.org/licenses/MIT
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: authorization
+    in: header
 paths:
   /athletes:
     get:
+      security:
+        - Bearer: []
       description: Gets All Athletes With Id
       parameters:
         - $ref: '#/parameters/Athlete Name in Query'
@@ -123,6 +130,15 @@ paths:
           description: Game does not exist any more.
         404:
           description: Game not found
+  /login:
+    post:
+      parameters:
+        - $ref: '#/parameters/LoginDataInBody'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized        
   /rankings/athletes:
     get:
       parameters:
@@ -274,7 +290,14 @@ paths:
           description: Deleted Athlete from Members
         404:
           description: Team not Found
-  
+  /users:
+    parameters:
+      - $ref: '#/parameters/InviteInQuery'
+      - $ref: '#/parameters/UserInBody'
+    post:
+      responses:
+        201:
+          description: Created
 parameters:
   Game in Body:
     name: game
@@ -308,6 +331,16 @@ parameters:
     in: query
     type: integer
     description: Team of a Game
+  InviteInQuery:
+    name: invite
+    in: query
+    type: string
+  LoginDataInBody:
+    name: login
+    in: body
+    description: email and Password
+    schema:
+      $ref: '#/definitions/LogIn'
   Season in Body:
     name: season
     in: body
@@ -353,6 +386,11 @@ parameters:
     type: string
     description: Name of a Team
     required: false
+  UserInBody:
+    in: body
+    name: user
+    schema:
+      $ref: '#/definitions/User'
 
 definitions:
   Game:
@@ -414,6 +452,13 @@ definitions:
       - $ref: '#/definitions/Game'
     properties:
      id:
+        type: string
+  LogIn:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
         type: string
   #TODO: Add missung properties
   Ranking:
@@ -499,4 +544,12 @@ definitions:
     properties: 
       id:
         type: string
-    
+  User:
+    type: object
+    properties:
+      email:
+        type: string
+      name: 
+        type: string
+      password:
+        type: string
