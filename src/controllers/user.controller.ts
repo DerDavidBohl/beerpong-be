@@ -7,8 +7,9 @@ import {
   UserJsonWebToken,
   IUser
 } from "../models/user.model";
-import { invited } from "../middleware/invite";
+import { tokenRequired } from "../middleware/tokenRequired";
 import { hashSync } from "bcryptjs";
+import { sendInviteMail } from "../utils/invite";
 
 export class UserController implements RestController {
   path: string = "/users";
@@ -16,8 +17,15 @@ export class UserController implements RestController {
     const router = Router();
 
     router.get("/current", authenticate, this.getCurrent);
-    router.post('/', invited, this.createUser)
+    router.post('/invite', authenticate, this.inviteUser);
+    router.post('/', tokenRequired, this.createUser);
+    
     return router;
+  }
+
+  inviteUser(req: Request, res: Response) {
+    sendInviteMail(req.body.email);
+    res.send(`Sent invite to ${req.body.email}.`);
   }
 
   createUser(req: Request, res: Response) {
@@ -30,7 +38,7 @@ export class UserController implements RestController {
     const doc: IUserDocument = req.body;
     doc.password = hashSync(newUser.password, 10);
     UserMongo.create(doc)
-    .catch((reason) => res.status(500).send())
+    .catch((reason) => res.status(500).send(reason))
     .then((user) => res.status(201).header('location', (<IUserDocument>user)._id).send()); 
   }
 

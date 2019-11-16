@@ -7,7 +7,7 @@ import { SeasonController } from "./controllers/season.controller";
 import { GameController } from "./controllers/game.controller";
 import { RankingController } from "./controllers/ranking.controller";
 import { get } from "config";
-import { sendInviteMail } from "./utils/initial.invite";
+import { sendInviteMail } from "./utils/invite";
 import { UserMongo } from "./models/user.model";
 import { UserController } from "./controllers/user.controller";
 import { LoginController } from "./controllers/login.controller";

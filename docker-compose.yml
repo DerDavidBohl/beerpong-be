@@ -23,10 +23,11 @@ services:
       - BEERPONG_EMAIL_SMTP_HOST=${BEERPONG_EMAIL_SMTP_HOST}
       - BEERPONG_EMAIL_SMTP_PORT=${BEERPONG_EMAIL_SMTP_PORT}
       - BEERPONG_SIGN_KEY=${BEERPONG_SIGN_KEY}
+      - BEERPONG_INVITE_URL=${BEERPONG_INVITE_URL}
   mongo:
     container_name: mongo
     image: mongo
     ports:
       - "27017:27017"
-    volumes: 
-      - /beerpong/mongodata:/data/db
+    volumes:
+      - /beerpong-be/beerpong-be-mongo-data:/data/db

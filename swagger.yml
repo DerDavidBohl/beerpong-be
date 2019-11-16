@@ -17,11 +17,21 @@ securityDefinitions:
     type: apiKey
     name: authorization
     in: header
+security:
+  - Bearer: []
 paths:
+  /login:
+    post:
+      security: []
+      parameters:
+        - $ref: '#/parameters/LoginDataInBody'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
   /athletes:
     get:
-      security:
-        - Bearer: []
       description: Gets All Athletes With Id
       parameters:
         - $ref: '#/parameters/Athlete Name in Query'
@@ -130,15 +140,6 @@ paths:
           description: Game does not exist any more.
         404:
           description: Game not found
-  /login:
-    post:
-      parameters:
-        - $ref: '#/parameters/LoginDataInBody'
-      responses:
-        200:
-          description: OK
-        401:
-          description: Unauthorized        
   /rankings/athletes:
     get:
       parameters:
@@ -292,12 +293,22 @@ paths:
           description: Team not Found
   /users:
     parameters:
-      - $ref: '#/parameters/InviteInQuery'
+      - $ref: '#/parameters/TokenInQuery'
       - $ref: '#/parameters/UserInBody'
     post:
+      security: []
       responses:
         201:
           description: Created
+  /users/invite:
+    post:
+      parameters:
+        - $ref: '#/parameters/InviteMailInBody'
+      responses:
+        200:
+          description: OK
+    
+      deprecated: false
 parameters:
   Game in Body:
     name: game
@@ -331,10 +342,11 @@ parameters:
     in: query
     type: integer
     description: Team of a Game
-  InviteInQuery:
-    name: invite
+  TokenInQuery:
+    name: token
     in: query
     type: string
+    required: true
   LoginDataInBody:
     name: login
     in: body
@@ -391,7 +403,11 @@ parameters:
     name: user
     schema:
       $ref: '#/definitions/User'
-
+  InviteMailInBody:
+    in: body
+    name: email
+    schema:
+      $ref: '#/definitions/Email'
 definitions:
   Game:
     type: object
@@ -543,6 +559,11 @@ definitions:
     type: object
     properties: 
       id:
+        type: string
+  Email:
+    type: object
+    properties:
+      email:
         type: string
   User:
     type: object

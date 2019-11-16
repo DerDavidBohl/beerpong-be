@@ -7,5 +7,6 @@
     "beerpong-email-password": "BEERPONG_EMAIL_PASSWORD",
     "beerpong-sign-key": "BEERPONG_SIGN_KEY",
     "beerpong-email-smtp-host": "BEERPONG_EMAIL_SMTP_HOST",
-    "beerpong-email-smtp-port": "BEERPONG_EMAIL_SMTP_PORT"
+    "beerpong-email-smtp-port": "BEERPONG_EMAIL_SMTP_PORT",
+    "beerpong-invite-url": "BEERPONG_INVITE_URL"
 }

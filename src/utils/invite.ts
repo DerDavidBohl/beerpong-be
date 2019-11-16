@@ -1,14 +1,11 @@
 import nodemailer from "nodemailer";
 import { get } from "config";
-import { InviteMongo, InviteDocument, Invite } from "../models/invite.model";
+import { TokenMongo, Token } from "../models/token.model";
 
 export function sendInviteMail(emailToInvite: string) {
 console.log(`sending invite to ${emailToInvite}`);
-const doc: Invite = {
-    email: emailToInvite
-}
 
-    InviteMongo.create(doc).then((invite) => {
+    TokenMongo.create(new TokenMongo()).then((token) => {
 
         const transport = nodemailer.createTransport({
             host: get('beerpong-email-smtp-host'),
@@ -23,8 +20,9 @@ const doc: Invite = {
         });
     
         transport.sendMail({
-            to: invite.email,
-            html: `Invite: ${invite._id}`
+            to: emailToInvite,
+            subject: 'We want you to administrate beerpong games!',
+            html: `Registriere dich <a href="${get<string>('beerpong-invite-url').replace('%token%', token.token)}">hier</a>`
         }).then((val) => console.log('Mail sent...' + val))
         .catch((reason) => console.error('Mail failed: ' + reason));
     });
