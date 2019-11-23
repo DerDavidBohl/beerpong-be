@@ -6,6 +6,7 @@ import { GameMongo, IGame } from "../models/game.model";
 import { Ranking, RankingType } from "../models/base.ranking.model";
 import { IHaveNameAndId } from "../interfaces/simple-name-and-id.interface";
 import { TeamMongo, TeamWithId } from "../models/team.model";
+import { authenticate } from "../middleware/authenticate";
 
 export class RankingController implements RestController {
   path: string = "/rankings";
@@ -13,6 +14,7 @@ export class RankingController implements RestController {
   initializeRoutes(): Router {
     const router: Router = Router();
 
+    router.use(authenticate);
     router.get("/athletes", (req, res) => this.getAllAthleteRankings(req, res));
     router.get("/teams", (req, res) => this.getAllTeamRankings(req, res));
 

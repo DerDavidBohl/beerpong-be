@@ -36,7 +36,7 @@ export class LoginController implements RestController {
         return;
       }
 
-      res.header("authorization", LoginController.getJwt(user)).send(LoginController.getJwt(user));
+      res.header("authorization", LoginController.getJwt(user)).send({token: LoginController.getJwt(user)});
     });
   }
 

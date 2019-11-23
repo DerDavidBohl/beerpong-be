@@ -1,6 +1,7 @@
 import { RestController } from "../interfaces/rest-controller.interface";
 import { Router, Request, Response } from "express";
 import SeasonMongo, { SeasonWithId, ISeason, SeasonSimple } from "../models/season.model";
+import { authenticate } from "../middleware/authenticate";
 
 
 export class SeasonController implements RestController {
@@ -8,6 +9,7 @@ export class SeasonController implements RestController {
 
     initializeRoutes(): Router {
         const router = Router();
+        router.use(authenticate);
 
         router.get('/', (req, res) => this.getAllSeasons(req, res));
         router.post('/', (req, res) => this.createNewSeason(req, res));
