@@ -10,13 +10,15 @@ import {
 import { tokenRequired } from "../middleware/tokenRequired";
 import { hashSync } from "bcryptjs";
 import { sendInviteMail } from "../utils/invite";
+import { verify } from "jsonwebtoken";
+import { get } from "config";
 
 export class UserController implements RestController {
   path: string = "/users";
   initializeRoutes(): Router {
     const router = Router();
 
-    router.get("/current", authenticate, this.getCurrent);
+    router.get("/current", this.getCurrent);
     router.post('/invite', authenticate, this.inviteUser);
     router.post('/', tokenRequired, this.createUser);
     
@@ -25,12 +27,13 @@ export class UserController implements RestController {
 
   inviteUser(req: Request, res: Response) {
     sendInviteMail(req.body.email);
-    res.send(`Sent invite to ${req.body.email}.`);
+    res.status(200).send();
   }
 
   createUser(req: Request, res: Response) {
     if(!<IUser>req.body){
       res.status(400).send();
+      return;
     }
 
     const newUser = <IUser>req.body;
@@ -43,9 +46,17 @@ export class UserController implements RestController {
   }
 
   async getCurrent(req: Request, res: Response) {
-    const user = await UserMongo.findById(
-      (<UserJsonWebToken>res.locals.jwtPayload).id
+
+    if(!req.headers.authorization) {
+      res.status(400).send();
+      return;
+    }
+
+    const token = req.headers.authorization;
+
+    const user = <IUser>await UserMongo.findById(
+      (<UserJsonWebToken>verify(token, get('beerpong-sign-key'))).id
     ).select("-password");
-    res.send(<IUser>user);
+    res.send({email: user.email, name: user.name});
   }
 }

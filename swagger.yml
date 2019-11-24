@@ -294,7 +294,7 @@ paths:
   /users:
     parameters:
       - $ref: '#/parameters/TokenInQuery'
-      - $ref: '#/parameters/UserInBody'
+      - $ref: '#/parameters/RegistrateUser'
     post:
       security: []
       responses:
@@ -307,8 +307,13 @@ paths:
       responses:
         200:
           description: OK
-    
-      deprecated: false
+  /users/current:
+    get:
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
 parameters:
   Game in Body:
     name: game
@@ -398,11 +403,11 @@ parameters:
     type: string
     description: Name of a Team
     required: false
-  UserInBody:
+  RegistrateUserInBody:
     in: body
     name: user
     schema:
-      $ref: '#/definitions/User'
+      $ref: '#/definitions/RegistrateUser'
   InviteMailInBody:
     in: body
     name: email
@@ -565,7 +570,7 @@ definitions:
     properties:
       email:
         type: string
-  User:
+  RegistrateUser:
     type: object
     properties:
       email:
@@ -573,4 +578,11 @@ definitions:
       name: 
         type: string
       password:
+        type: string
+  User:
+    type: object
+    properties:
+      email:
+        type: string
+      name: 
         type: string

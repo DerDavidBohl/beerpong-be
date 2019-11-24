@@ -1,6 +1,10 @@
 import { RestController } from "../interfaces/rest-controller.interface";
 import { Router, Request, Response } from "express";
-import { UserMongo, IUserDocument, UserJsonWebToken } from "../models/user.model";
+import {
+  UserMongo,
+  IUserDocument,
+  UserJsonWebToken
+} from "../models/user.model";
 import { Login } from "../models/login.model";
 import { compareSync } from "bcryptjs";
 import { sign } from "jsonwebtoken";
@@ -19,25 +23,32 @@ export class LoginController implements RestController {
 
   login(req: Request, res: Response) {
     if (!(<Login>req.body)) {
-      res.status(401).send('Wrong Login Information');
+      res.status(401).send("Wrong Login Information");
       return;
     }
 
-    const login: Login = req.body;
+    try {
+      const login: Login = req.body;
 
-    UserMongo.findOne({ email: login.email }, (err, user) => {
-      if (err || !user) {
-        res.status(401).send('User Not Found');
-        return;
-      }
+      UserMongo.findOne({ email: login.email }, (err, user) => {
+        if (err || !user) {
+          res.status(401).send("User Not Found");
+          return;
+        }
 
-      if (!compareSync(login.password, user.password)) {
-        res.status(401).send('Wrong Password');
-        return;
-      }
+        if (!compareSync(login.password, user.password)) {
+          res.status(401).send("Wrong Password");
+          return;
+        }
 
-      res.header("authorization", LoginController.getJwt(user)).send({token: LoginController.getJwt(user)});
-    });
+        res
+          .header("authorization", LoginController.getJwt(user))
+          .send({ token: LoginController.getJwt(user) });
+      });
+    } catch (error) {
+      res.status(400).send();
+      return;
+    }
   }
 
   static getJwt(user: IUserDocument) {
@@ -46,9 +57,9 @@ export class LoginController implements RestController {
         id: user._id,
         email: user.email
       },
-      get("beerpong-sign-key")
-      , {
-        expiresIn: '1 day'
+      get("beerpong-sign-key"),
+      {
+        expiresIn: "1 day"
       }
     );
     return token;

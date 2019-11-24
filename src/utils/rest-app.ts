@@ -12,10 +12,7 @@ export class RestApp {
 
     constructor(private port: number, private controllers: RestController[], apiRoute: string = '/api/v1', defaultRoute: string = '') {
           
-        this.app.use((err: Error, req: Request, res: Response, next: any) => {
-            console.error(err.stack);
-            res.status(500).send('Something went wrong!!');
-        });
+        
         this.app.use(bodyParser.json());
         this.app.use(cors({
             exposedHeaders: ['location']
@@ -27,6 +24,10 @@ export class RestApp {
                 throw new Error('The Controller does not have a path.')
             }
             this.app.use(apiRoute + controller.path, controller.initializeRoutes());
+        });
+        this.app.use((err: Error, req: Request, res: Response, next: any) => {
+            console.error(err.stack);
+            res.status(500).send('Something went wrong!!');
         });
 
         this.app.use((req, res) => res.redirect(defaultRoute));
