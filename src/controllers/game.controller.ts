@@ -2,6 +2,7 @@ import { RestController } from "../interfaces/rest-controller.interface";
 import { Router, Request, Response } from "express";
 import { GameMongo, IGame, GameWithId, SpecificGame } from "../models/game.model";
 import AthleteMongo, { IAthlete, AthleteWithId, Athlete } from "../models/athlete.model";
+import { authenticate } from "../middleware/authenticate";
 
 export class GameController implements RestController {
 
@@ -10,6 +11,7 @@ export class GameController implements RestController {
     initializeRoutes(): Router {
         const router = Router();
 
+        router.use(authenticate);
         router.get('/', (req, res) => this.getAllGames(req, res));
         router.post('/', (req, res) => this.createNewGame(req, res));
         router.get('/:gameId', (req, res) => this.getSpecificGame(req, res));

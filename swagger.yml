@@ -1,6 +1,6 @@
 basePath: /api/v1
 swagger: '2.0'
-info:
+info:  
   version: 1.0.0
   title: Beerpong
   description: Backend for the Beerpong Web App.
@@ -12,7 +12,24 @@ info:
   license:
     name: MIT
     url: http://opensource.org/licenses/MIT
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: authorization
+    in: header
+security:
+  - Bearer: []
 paths:
+  /login:
+    post:
+      security: []
+      parameters:
+        - $ref: '#/parameters/LoginDataInBody'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized
   /athletes:
     get:
       description: Gets All Athletes With Id
@@ -274,7 +291,29 @@ paths:
           description: Deleted Athlete from Members
         404:
           description: Team not Found
-  
+  /users:
+    parameters:
+      - $ref: '#/parameters/TokenInQuery'
+      - $ref: '#/parameters/RegistrateUser'
+    post:
+      security: []
+      responses:
+        201:
+          description: Created
+  /users/invite:
+    post:
+      parameters:
+        - $ref: '#/parameters/InviteMailInBody'
+      responses:
+        200:
+          description: OK
+  /users/current:
+    get:
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
 parameters:
   Game in Body:
     name: game
@@ -308,6 +347,17 @@ parameters:
     in: query
     type: integer
     description: Team of a Game
+  TokenInQuery:
+    name: token
+    in: query
+    type: string
+    required: true
+  LoginDataInBody:
+    name: login
+    in: body
+    description: email and Password
+    schema:
+      $ref: '#/definitions/LogIn'
   Season in Body:
     name: season
     in: body
@@ -353,7 +403,16 @@ parameters:
     type: string
     description: Name of a Team
     required: false
-
+  RegistrateUserInBody:
+    in: body
+    name: user
+    schema:
+      $ref: '#/definitions/RegistrateUser'
+  InviteMailInBody:
+    in: body
+    name: email
+    schema:
+      $ref: '#/definitions/Email'
 definitions:
   Game:
     type: object
@@ -414,6 +473,13 @@ definitions:
       - $ref: '#/definitions/Game'
     properties:
      id:
+        type: string
+  LogIn:
+    type: object
+    properties:
+      email:
+        type: string
+      password:
         type: string
   #TODO: Add missung properties
   Ranking:
@@ -499,4 +565,24 @@ definitions:
     properties: 
       id:
         type: string
-    
+  Email:
+    type: object
+    properties:
+      email:
+        type: string
+  RegistrateUser:
+    type: object
+    properties:
+      email:
+        type: string
+      name: 
+        type: string
+      password:
+        type: string
+  User:
+    type: object
+    properties:
+      email:
+        type: string
+      name: 
+        type: string

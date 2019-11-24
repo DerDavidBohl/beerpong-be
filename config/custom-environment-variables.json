@@ -1,5 +1,12 @@
 {
     "beerpong-port":"BEERPONG_PORT",
     "mongo-host": "MONGO_HOST",
-    "mongo-port": "MONGO_PORT"
+    "mongo-port": "MONGO_PORT",
+    "beerpong-initial-user-email": "BEERPONG_INIT_USER_EMAIL",
+    "beerpong-email": "BEERPONG_EMAIL",
+    "beerpong-email-password": "BEERPONG_EMAIL_PASSWORD",
+    "beerpong-sign-key": "BEERPONG_SIGN_KEY",
+    "beerpong-email-smtp-host": "BEERPONG_EMAIL_SMTP_HOST",
+    "beerpong-email-smtp-port": "BEERPONG_EMAIL_SMTP_PORT",
+    "beerpong-invite-url": "BEERPONG_INVITE_URL"
 }

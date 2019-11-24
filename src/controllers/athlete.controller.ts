@@ -2,13 +2,14 @@ import { RestController } from "../interfaces/rest-controller.interface";
 import { Router } from "express";
 import {Request, Response} from "express";
 import AthleteMongo, { IAthlete, Athlete, AthleteWithId } from "../models/athlete.model";
+import { authenticate } from "../middleware/authenticate";
 
 export class AthleteController implements RestController {
     path: string = '/athletes';    
     
     initializeRoutes(): Router {
         const router = Router();
-
+        router.use(authenticate);
         router.get('/', (req, res) => this.getAllAthletes(req, res));
         router.post('/', (req, res) => this.createAthlete(req, res));
 

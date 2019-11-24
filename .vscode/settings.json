@@ -2,7 +2,8 @@
     "files.exclude": {
         "build": true,
         "package-lock.json": true,
-        "node_modules": false
+        "node_modules": false,
+        "beerpong-be-mongo-data": false
     },
     "npm.enableScriptExplorer": true
 }

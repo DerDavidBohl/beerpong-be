@@ -9,12 +9,14 @@ import {
 import AthleteMongo, { Athlete } from "../models/athlete.model";
 import { model } from "mongoose";
 import bodyParser = require("body-parser");
+import { authenticate } from "../middleware/authenticate";
 
 export class TeamController implements RestController {
   path: string = "/teams";
 
   initializeRoutes(): Router {
     const router: Router = Router();
+    router.use(authenticate);
 
     router.get("/", (req, res) => this.getAllTeams(req, res));
     router.post("/", (req, res) => this.createNewTeam(req, res));
