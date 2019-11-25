@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { TokenMongo } from "../models/token.model";
+import { TokenMongo } from "../models/invite-token.model";
 
 export function tokenRequired(req: Request, res: Response, next: NextFunction) {
   TokenMongo.findOne({ token: req.param("token") }, (err, token) => {

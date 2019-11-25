@@ -34,7 +34,7 @@ mongoose.connection.on(
 );
 mongoose.connect(
   `mongodb://${get("mongo-host")}:${get("mongo-port")}/beerpong`,
-  { useNewUrlParser: true },
+  { useNewUrlParser: true, user: 'root', pass: get('beerpong-mongo-initdb-root-password'), authMechanism: 'DEFAULT', authSource: 'admin' },
   err => {
     if (err) {
       console.log(err);

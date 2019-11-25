@@ -1,7 +1,7 @@
 import { model, Schema, Document } from "mongoose";
 import { randomBytes } from "crypto";
 
-const TokenSchema = new Schema({
+const InviteTokenSchema = new Schema({
   token: {
     type: String,
     required: true,
@@ -15,10 +15,10 @@ const TokenSchema = new Schema({
   }
 });
 
-export interface Token {
+export interface InviteToken {
   token: string;
 }
 
-export interface TokenDocument extends Document, Token {}
+export interface InviteTokenDocument extends Document, InviteToken {}
 
-export const TokenMongo = model<TokenDocument>("Token", TokenSchema);
+export const TokenMongo = model<InviteTokenDocument>("InviteToken", InviteTokenSchema);

@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 import { get } from "config";
-import { TokenMongo, Token } from "../models/token.model";
+import { TokenMongo, InviteToken } from "../models/invite-token.model";
 
 export function sendInviteMail(emailToInvite: string) {
 console.log(`sending invite to ${emailToInvite}`);
