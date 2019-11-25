@@ -21,4 +21,4 @@ export interface InviteToken {
 
 export interface InviteTokenDocument extends Document, InviteToken {}
 
-export const TokenMongo = model<InviteTokenDocument>("InviteToken", InviteTokenSchema);
+export const InviteTokenMongo = model<InviteTokenDocument>("InviteToken", InviteTokenSchema);

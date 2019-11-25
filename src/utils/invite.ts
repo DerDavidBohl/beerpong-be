@@ -1,11 +1,11 @@
 import nodemailer from "nodemailer";
 import { get } from "config";
-import { TokenMongo, InviteToken } from "../models/invite-token.model";
+import { InviteTokenMongo } from "../models/invite-token.model";
 
 export function sendInviteMail(emailToInvite: string) {
 console.log(`sending invite to ${emailToInvite}`);
 
-    TokenMongo.create(new TokenMongo()).then((token) => {
+    InviteTokenMongo.create(new InviteTokenMongo()).then((token) => {
 
         const transport = nodemailer.createTransport({
             host: get('beerpong-email-smtp-host'),
