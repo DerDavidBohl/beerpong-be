@@ -5,8 +5,8 @@ import { IAthlete, AthleteWithId } from "./athlete.model";
 
 export interface IGame extends Document {
   date: Date;
-  scoreTeam1: Number;
-  scoreTeam2: Number;
+  remainingCupsTeam1: Number;
+  remainingCupsTeam2: Number;
   season: ISeason;
   team1: ITeam;
   team2: ITeam;
@@ -16,8 +16,8 @@ export interface IGame extends Document {
 
 export class SpecificGame {
     date: Date;
-    scoreTeam1: Number;
-    scoreTeam2: Number;
+    remainingCupsTeam1: Number;
+    remainingCupsTeam2: Number;
     season: SeasonWithId | null;
     team1: TeamWithId | null;
     team2: TeamWithId | null;
@@ -26,8 +26,8 @@ export class SpecificGame {
 
     constructor(game: IGame) {
       this.date = game.date;
-      this.scoreTeam1 = game.scoreTeam1;
-      this.scoreTeam2 = game.scoreTeam2;
+      this.remainingCupsTeam1 = game.remainingCupsTeam1;
+      this.remainingCupsTeam2 = game.remainingCupsTeam2;
   
       if (!game.team1) {
         this.team1 = null;
@@ -74,8 +74,8 @@ export class GameWithId extends SpecificGame {
 
 export const GameSchema: Schema = new Schema({
   date: { type: Date },
-  scoreTeam1: { type: Number },
-  scoreTeam2: { type: Number },
+  remainingCupsTeam1: { type: Number },
+  remainingCupsTeam2: { type: Number },
   season: { type: Schema.Types.ObjectId, ref: 'Season' },
   team1: { type: Schema.Types.ObjectId, ref: 'Team' },
   team2: { type: Schema.Types.ObjectId, ref: 'Team' },

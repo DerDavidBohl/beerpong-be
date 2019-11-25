@@ -429,9 +429,9 @@ definitions:
       date:
         type: string
         format: date-time
-      scoreTeam1:
+      remainingCupsTeam1:
         type: integer
-      scoreTeam2:
+      remainingCupsTeam2:
         type: integer
       season:
         $ref: '#/definitions/Season with Id'
@@ -453,9 +453,9 @@ definitions:
       date:
         type: string
         format: date-time
-      scoreTeam1:
+      remainingCupsTeam1:
         type: integer
-      scoreTeam2:
+      remainingCupsTeam2:
         type: integer
       season:
         type: string

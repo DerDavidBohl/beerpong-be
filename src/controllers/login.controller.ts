@@ -30,7 +30,7 @@ export class LoginController implements RestController {
     try {
       const login: Login = req.body;
 
-      UserMongo.findOne({ email: login.email }, (err, user) => {
+      UserMongo.findOne({ email: login.email.toLowerCase() }, (err, user) => {
         if (err || !user) {
           res.status(401).send("User Not Found");
           return;

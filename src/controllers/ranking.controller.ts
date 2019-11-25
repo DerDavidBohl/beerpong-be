@@ -111,13 +111,13 @@ export class RankingController implements RestController {
       let cupsHostileSide: number = -1;
 
       if (game.team1 && game.team1._id.equals(rankableEntity.id)) {
-        cupsOwnSide = game.scoreTeam1.valueOf();
-        cupsHostileSide = game.scoreTeam2.valueOf();
+        cupsOwnSide = game.remainingCupsTeam1.valueOf();
+        cupsHostileSide = game.remainingCupsTeam2.valueOf();
       }
       
       if (game.team2 && game.team2._id.equals(rankableEntity.id)) {
-        cupsOwnSide = game.scoreTeam2.valueOf();
-        cupsHostileSide = game.scoreTeam1.valueOf();
+        cupsOwnSide = game.remainingCupsTeam2.valueOf();
+        cupsHostileSide = game.remainingCupsTeam1.valueOf();
       }
 
       rank.hostileHits += 10 - cupsOwnSide;
@@ -177,8 +177,8 @@ export class RankingController implements RestController {
           rankableEntity.id
         )
       ) {
-        rank.hostileHits += 10 - game.scoreTeam1.valueOf();
-        rank.ownHits += 10 - game.scoreTeam2.valueOf();
+        rank.hostileHits += 10 - game.remainingCupsTeam1.valueOf();
+        rank.ownHits += 10 - game.remainingCupsTeam2.valueOf();
       }
       if (
         this.athleteArrayContainsAthleteById(
@@ -186,20 +186,20 @@ export class RankingController implements RestController {
           rankableEntity.id
         )
       ) {
-        rank.hostileHits += 10 - game.scoreTeam2.valueOf();
-        rank.ownHits += 10 - game.scoreTeam1.valueOf();
+        rank.hostileHits += 10 - game.remainingCupsTeam2.valueOf();
+        rank.ownHits += 10 - game.remainingCupsTeam1.valueOf();
       }
       if (
         (this.athleteArrayContainsAthleteById(
           game.athletesTeam1,
           rankableEntity.id
         ) &&
-          game.scoreTeam1 > game.scoreTeam2) ||
+          game.remainingCupsTeam1 > game.remainingCupsTeam2) ||
         (this.athleteArrayContainsAthleteById(
           game.athletesTeam2,
           rankableEntity.id
         ) &&
-          game.scoreTeam2 > game.scoreTeam1)
+          game.remainingCupsTeam2 > game.remainingCupsTeam1)
       ) {
         rank.amountOfVictories++;
       } else {

@@ -1,7 +1,6 @@
 import { RestController } from "../interfaces/rest-controller.interface";
 import { Router, Request, Response } from "express";
 import { GameMongo, IGame, GameWithId, SpecificGame } from "../models/game.model";
-import AthleteMongo, { IAthlete, AthleteWithId, Athlete } from "../models/athlete.model";
 import { authenticate } from "../middleware/authenticate";
 
 export class GameController implements RestController {

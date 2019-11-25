@@ -52,8 +52,9 @@ export class UserController implements RestController {
     }
 
     const newUser = <IUser>req.body;
-
-    const doc: IUserDocument = req.body;
+    newUser.email = newUser.email.toLowerCase();
+    
+    const doc: IUserDocument = <IUserDocument>newUser;
     doc.password = hashSync(newUser.password, 10);
     UserMongo.create(doc)
     .catch((reason) => res.status(500).send(reason))
