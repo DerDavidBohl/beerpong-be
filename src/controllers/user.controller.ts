@@ -20,9 +20,24 @@ export class UserController implements RestController {
 
     router.get("/current", this.getCurrent);
     router.post('/invite', authenticate, this.inviteUser);
+    router.post('/init', this.init)
     router.post('/', tokenRequired, this.createUser);
     
     return router;
+  }
+
+  init(req: Request, res: Response) {
+
+    UserMongo.find((err, users) => {
+      if (users.length == 0) {
+        sendInviteMail(get("beerpong-initial-user-email"));
+        res.status(201).send();
+        return;
+
+      }
+      res.status(400).send();
+      return;
+    });
   }
 
   inviteUser(req: Request, res: Response) {

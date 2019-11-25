@@ -300,6 +300,15 @@ paths:
       responses:
         201:
           description: Created
+  /users/init:
+    post:
+      security: []
+      responses:
+        201:
+          description: Sent Mail
+        400:
+          description: Mail not sent
+      
   /users/invite:
     post:
       parameters:
