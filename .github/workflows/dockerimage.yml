@@ -18,4 +18,5 @@ jobs:
       with:
         name: davidbohl/beerpong-be
         username: ${{ secrets.DOCKER_USERNAME }}
+        tag: $(date +%s)
         password: ${{ secrets.DOCKER_PASSWORD }}
