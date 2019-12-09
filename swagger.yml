@@ -294,7 +294,7 @@ paths:
   /users:
     parameters:
       - $ref: '#/parameters/TokenInQuery'
-      - $ref: '#/parameters/RegistrateUser'
+      - $ref: '#/parameters/RegistrateUserInBody'
     post:
       security: []
       responses:
