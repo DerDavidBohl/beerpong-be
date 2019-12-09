@@ -12,6 +12,8 @@ import { hashSync } from "bcryptjs";
 import { sendInviteMail } from "../utils/invite";
 import { verify } from "jsonwebtoken";
 import { get } from "config";
+import { mailer } from "../utils/mailer";
+import { ConfirmTokenDocument, ConfirmTokenMongo, ConfirmToken } from "../models/confirm-token.model";
 
 export class UserController implements RestController {
   path: string = "/users";
@@ -22,8 +24,37 @@ export class UserController implements RestController {
     router.post('/invite', authenticate, this.inviteUser);
     router.post('/init', this.init)
     router.post('/', tokenRequired, this.createUser);
-    
+    router.post('/confirm', this.confirmCreation)
+
     return router;
+  }
+
+  confirmCreation(req: Request, res: Response) {
+    if (!req.query.token) {
+      res.status(400).send('No Token provided.');
+      return;
+    }
+
+    ConfirmTokenMongo.findOne({ token: req.query.token }, (err, token) => {
+      if (!token || err) {
+        res.status(404).send('Could not find Token');
+        return;
+      }
+      UserMongo.findById(token._userId, (err, user) => {
+        if (!user || err) {
+          res.status(500).send('Could not find User for this Token.');
+          return;
+        }
+
+        user.emailVerified = true;
+        user.save((err, savedUser) => {
+
+          token.remove(() => {
+            res.status(200).send(`User ${savedUser.name} is now confirmed.`);
+          });
+        });
+      })
+    });
   }
 
   init(req: Request, res: Response) {
@@ -46,24 +77,43 @@ export class UserController implements RestController {
   }
 
   createUser(req: Request, res: Response) {
-    if(!<IUser>req.body){
+    if (!<IUser>req.body) {
       res.status(400).send();
       return;
     }
 
     const newUser = <IUser>req.body;
-    newUser.email = newUser.email.toLowerCase();
-    
+    newUser.email = newUser.email.toLowerCase(); //Email should be saved as lowercase to find it again
+
     const doc: IUserDocument = <IUserDocument>newUser;
     doc.password = hashSync(newUser.password, 10);
-    UserMongo.create(doc)
-    .catch((reason) => res.status(500).send(reason))
-    .then((user) => res.status(201).header('location', (<IUserDocument>user)._id).send()); 
+    UserMongo.create(doc, (err: any, createdUser: IUserDocument) => {
+      if (err) {
+        res.status(500).send(err);
+        return;
+      }
+
+      const tokenDoc: ConfirmToken = {
+        _userId: createdUser._id
+      }
+
+      ConfirmTokenMongo.create(tokenDoc, (err: any, token: ConfirmTokenDocument) => {
+        mailer.sendMail({ to: createdUser.email, text: `You can confirm your registration here: ${get<string>('beerpong-confirm-url').replace('%token%', token.token)}` },
+          (err, info) => {
+            if (err) {
+              res.status(500).send(err);
+              return;
+            }
+
+            res.status(201).send(`Confirmation Mail sent to: ${createdUser.email}`);
+          });
+      });
+    });
   }
 
   async getCurrent(req: Request, res: Response) {
 
-    if(!req.headers.authorization) {
+    if (!req.headers.authorization) {
       res.status(404).send();
       return;
     }
@@ -73,6 +123,6 @@ export class UserController implements RestController {
     const user = <IUser>await UserMongo.findById(
       (<UserJsonWebToken>verify(token, get('beerpong-sign-key'))).id
     ).select("-password");
-    res.send({email: user.email, name: user.name});
+    res.send({ email: user.email, name: user.name });
   }
 }

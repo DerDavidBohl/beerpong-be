@@ -9,5 +9,6 @@
     "beerpong-email-smtp-host": "BEERPONG_EMAIL_SMTP_HOST",
     "beerpong-email-smtp-port": "BEERPONG_EMAIL_SMTP_PORT",
     "beerpong-invite-url": "BEERPONG_INVITE_URL",
-    "beerpong-mongo-initdb-root-password": "BEERPONG_MONGO_INITDB_ROOT_PASSWORD"
+    "beerpong-mongo-initdb-root-password": "BEERPONG_MONGO_INITDB_ROOT_PASSWORD",
+    "beerpong-confirm-url": "BEERPONG_CONFIRM_URL"
 }

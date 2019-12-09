@@ -323,6 +323,16 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/User'
+  /users/confirm:
+    post:
+      security: []
+      parameters:
+        - $ref: '#/parameters/ConfirmTokenInQuery'
+      responses:
+        200:
+          description: OK - User Creation successfully confirmed
+        404:
+          description: Token not found
 parameters:
   Game in Body:
     name: game
@@ -422,6 +432,11 @@ parameters:
     name: email
     schema:
       $ref: '#/definitions/Email'
+  ConfirmTokenInQuery:
+    in: query
+    name: token
+    type: string
+      
 definitions:
   Game:
     type: object
