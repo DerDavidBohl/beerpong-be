@@ -64,7 +64,7 @@ export class UserController implements RestController {
   async getCurrent(req: Request, res: Response) {
 
     if(!req.headers.authorization) {
-      res.status(400).send();
+      res.status(404).send();
       return;
     }
 
