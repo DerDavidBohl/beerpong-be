@@ -29,8 +29,6 @@ export class RestApp {
             console.error(err.stack);
             res.status(500).send('Something went wrong!!');
         });
-
-        this.app.use((req, res) => res.redirect(defaultRoute));
     }
 
     start() {
