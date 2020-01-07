@@ -24,8 +24,8 @@ const app = new RestApp(
     new UserController(),
     new LoginController()
   ],
-  "/api/v1",
-  "/api/v1/swagger"
+  "./api/v1",
+  "./api/v1/swagger"
 );
 
 mongoose.connection.on(
