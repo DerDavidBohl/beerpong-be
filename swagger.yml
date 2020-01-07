@@ -1,4 +1,4 @@
-basePath: /api/v1
+basePath: /beerpong/api/v1
 swagger: '2.0'
 info:  
   version: 1.0.0
