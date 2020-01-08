@@ -8,7 +8,8 @@
     "watch": "tsc --watch",
     "start": "tsc && node build/server.js",
     "dev": "nodemon -L -e ts --exec \"npm run start\"",
-    "build": "tsc"
+    "build": "tsc",
+    "docker": "docker-compose down && docker-compose up"
   },
   "repository": {
     "type": "git",

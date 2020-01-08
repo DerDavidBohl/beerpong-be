@@ -24,7 +24,8 @@ const app = new RestApp(
     new UserController(),
     new LoginController()
   ],
-  "/api/v1"
+  "/beerpong/api/v1",
+  '/swagger'
 );
 
 mongoose.connection.on(
