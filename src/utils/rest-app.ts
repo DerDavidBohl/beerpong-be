@@ -25,6 +25,9 @@ export class RestApp {
             }
             this.app.use(apiRoute + controller.path, controller.initializeRoutes());
         });
+
+        this.app.use((req, res) => res.redirect(`${apiRoute}${defaultSubRoute}`))
+
         this.app.use((err: Error, req: Request, res: Response, next: any) => {
             console.error(err.stack);
             res.status(500).send('Something went wrong!!');
